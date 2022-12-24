@@ -1,0 +1,164 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+  <title>추천 메뉴</title>
+
+  <style>
+    .user_img{
+      border: 3px;
+      
+    }
+
+    button{
+      align-items: center !important; 
+      text-align: right !important;
+      background-color: none !important;
+      border:none !important; 
+      background: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    
+    <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+      <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+    </div>
+  </div>
+  <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+    <ul class="nav-container" style="text-align : center;">
+      <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white">HOME</font></a></li>
+      <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+      <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+      <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+      <li class="nav-item"><label for ="before"><font size="4em" color="white">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+    </ul>
+  </div>
+
+  <script>
+    function history_back() {
+        history.back();
+    }
+  </script>
+
+  
+  <div style="text-align : center; margin-bottom: 100px; margin-top: 150px;">
+    <font size="10em" color="black"><b>분석 결과 </font><font size="12em" color="red">{{emotion}}</font><font size="10em" color="black"> 감정입니다.</font></b>
+  </div>
+
+  <div style="width: 100%; text-align : center; margin-bottom: 100px;">
+    <!-- 사용자 업로드 사진 -->
+    <div style="display: inline-block; margin-top: 0px;">
+      <img class = user_img src="/media/{{ arr.mainphoto }}" alt="" height="410px">
+    </div>
+    <!-- 추천해설문구 -->
+    <div style="display: inline-block; text-align : center; margin-bottom: 0px; margin-left: 50px; ">
+        <font size="6em" color="black">당신의 </font><font size="6em" color="red">{{emotion}}</font> <font size="6em" color="black">감정<br><br><br><br></font> 
+        <font size="6em" color="black">현재 계절 </font><font size="6em" color="red">{{season}}<br><br><br><br></font>
+        <font size="6em" color="black">오늘의 </font><font size="6em" color="red">{{wea}} </font><font size="6em" color="black">날씨를 고려해 <br><br><br><br>
+          다음 메뉴를 추천드립니다.</font>
+      </div>
+  </div>
+  
+
+  <div style="text-align : center; margin-top: 0px; margin-bottom: 100px;">
+    <img src="{% static 'img/down_navy.png' %}" alt="아래화살표" width="120px" height="100px" title="아래화살표">
+  </div>
+
+  <div style="width: 100%; text-align : center;">
+    <!-- <div style="width: 80%; height: 500px; text-align : center; display: inline-block;"> -->
+      <!-- <div style="display: inline-block;">
+        <table border = "1" bordercolor="blue" height="400" align="center">
+          <th><font size="6em" color="black">USER IMG</font></th>
+          <tr>
+            
+            <td><img class = user_img src="/media/{{ arr.mainphoto }}" alt="" height="320"></td>
+            
+          </tr>
+        </table>
+      </div> -->
+    
+      <form action="{% url 'mysite:choice' %}" method="GET" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        
+      <div style="display: inline-block;">
+        <div style="margin-bottom: 80px;">
+        <font size="4em" color="red">가장 마음에 드는 메뉴를 선택해주세요!</font><br><br>
+        <font size="4em" color="red">선택하기를 클릭하면 매장위치 및 정보 확인이 가능합니다.</font>
+        </div>
+        <table border = "1" bordercolor="blue" width ="900" height="400" align="center">
+          <!-- <th>순위</th> -->
+          <th><font size="6em" color="black">순위 </font></th>
+          <th><font size="6em" color="black">추천메뉴 </font></th>
+          <th><font size="6em" color="black">매장명</font></th>
+          <th><font size="6em" color="black">선택하기</font></th>
+          <!-- <th><font size="6em" color="black">매장정보</font></th> -->
+    
+          {% for f, d, e in folist %}
+          <!-- <div style="    
+          width: 100%; text-align : center;
+          align-items: center;
+          ">
+          <tr>
+            <td><div style="display: inline-block; width: 100%; text-align : center;"><font size="4em" color="black">{{f}}순위</font></div></td>
+            <td><div style="display: inline-block; width: 100%; text-align : center;"><font size="4em" color="black">{{d}}</font></div></td>
+            <td><div style="display: inline-block; width: 100%; text-align : center;"><font size="4em" color="black">{{e}}</font></div></td>
+            <div style="display: inline-block; width: 100%; text-align : center;">
+            <td>
+                  <button type="submit" name="choice" value="{{d}},{{e}},{{emotion}},{{wea}},{{season}}">
+                    <img  src="/static/img/choice_button1.png" width="100">
+                  </button> -->
+            <tr>
+              <td><br><br><br><font size="4em" color="black">{{f}}순위</font></td>
+              <td><br><br><br><font size="4em" color="black">{{d}}</font></td>
+              <td><br><br><br><font size="4em" color="black">{{e}}</font></td>
+              
+              <td>
+                    <br><button  style="display: inline-block; text-align : center;" type="submit" name="choice" value="{{d}},{{e}},{{emotion}},{{wea}},{{season}}">
+                      <img style="text-align : center;" src="/static/img/choice_button1.png" width="100">
+                    </button>
+
+
+              {% endfor%}
+            </td>
+            </div>
+
+          </tr>
+          </div>
+
+        </table>
+        
+      </div>
+    </div>
+  </div>
+
+    <div style="margin-top: 250px;">
+        <div style="display: inline-block; margin-left: 100px;">누적 방문자수 : {{count}}명</div>
+        <div style="display: inline-block; margin-left: 50px;">누적 추천횟수 : {{rec_count}}회</div>
+    </div>
+
+    <br>
+    <hr size="3px" width="90%">
+    <section id="copyright">
+        
+        <p>
+            ※ 본 서비스의 저작권은 멀티캠퍼스 데이터사이언스/엔지니어링 3팀 식스시그마에 있습니다.<br>
+            수정 및 재배포, 무단 도용 시 법적인 문제가 발생할 수 있습니다.
+        </p>
+    </section>
+
+</body>
+</html>
+
+
+  

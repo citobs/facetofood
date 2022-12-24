@@ -1,0 +1,318 @@
+<!-- 추가 -->
+{% load static %}
+<!-- 추가끝 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+        <!-- 추가 -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+        <script defer src="{% static 'js/10000hours.js' %}"></script>
+        <title>매장정보보기</title>
+        <!-- 추가끝 -->
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+/* 추가 */
+        hr {
+            height: 1px;
+            background-color: black !important;
+            border-color: black !important;
+            color :black !important;
+        }
+
+        .count {
+            font-family: 'GmarketSansMedium'!important;
+            font-size: 16px !important;
+            background-color: rgb(255, 255, 255) !important;
+            color: rgb(0, 0, 0) !important;
+        }
+/* 추가끝 */
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
+
+    <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        #map_bd0249581ae2d13ca218628ce9ad97df {
+                    /* 변경 */
+                    text-align: center;
+                    position: relative;
+                    width: 70%;
+                    height: 700px;
+                    left: 0.0%;
+                    top: 0.0%;
+                    margin-left: 15%;
+                    margin-right: 15%;
+                    /* 변경끝 */
+        }
+    </style>
+
+</head>
+
+<body>
+            <!-- 추가 -->
+            <div>
+    
+                <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+                    <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+                </div>
+        
+                </div>
+                <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+                <ul class="nav-container" style="text-align : center; height: 48px; margin-top: 5px; font-family: 'GmarketSansMedium'!important;">
+                    <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white" >HOME</font></a></li>
+                    <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+                    <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+                    <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+                    <li class="nav-item"><label for ="before"><font size="4em" color="white" font-family = "GmarketSansMedium">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+                </ul>
+            </div>
+    
+            <script>
+                function history_back() {
+                    history.back();
+                }
+              </script>
+        
+            <div style="text-align : center; margin-bottom: 80px; margin-top: 80px;">
+                <b><font size="12em" color="red">성성식당</font><font size="10em" color="black"> 지도보기 </font></b>
+            </div>
+        
+            <!-- 안내문 영역 -->
+            <!-- <div style="text-align : center; margin-bottom: 40px;">
+                <font size="5em" color="black"><b>지도 위 핀을 클릭하면<br><br>지점 주소, 전화번호, 운영시간 등 <br><br>다양한 정보 확인이 가능합니다</b></font>
+            </div> -->
+            <div style="text-align : center; margin-bottom: 20px;">
+                <font size="3em" color="black"><b>지도 위 핀을 클릭하면 지점 주소, 전화번호, 운영시간 등 다양한 정보 확인이 가능합니다</b></font>
+            </div>
+            <!-- 추가끝 -->
+
+
+    <div class="folium-map" id="map_bd0249581ae2d13ca218628ce9ad97df"></div>
+
+            <!-- 추가 -->
+            <div class = "count" style="margin-top: 250px;">
+                <div style="display: inline-block; margin-left: 100px;">누적 방문자수 : {{count}}명</div>
+                <div style="display: inline-block; margin-left: 50px;">누적 추천횟수 : {{rec_count}}회</div>
+            </div>
+          
+            <br>
+            <div >
+            <hr size="3px" width="90%">
+            <section id="copyright">
+                
+                <p>
+                    ※ 본 서비스의 저작권은 멀티캠퍼스 데이터사이언스/엔지니어링 3팀 식스시그마에 있습니다.<br>
+                    수정 및 재배포, 무단 도용 시 법적인 문제가 발생할 수 있습니다.
+                </p>
+            </section>
+            </div>
+            <!-- 추가끝 -->
+</body>
+<script>
+
+
+    var map_bd0249581ae2d13ca218628ce9ad97df = L.map(
+        "map_bd0249581ae2d13ca218628ce9ad97df",
+        {
+            center: [37.559819, 126.963895],
+            crs: L.CRS.EPSG3857,
+            zoom: 11,
+            zoomControl: true,
+            preferCanvas: false,
+        }
+    );
+
+
+
+
+
+    var tile_layer_5787775987df457014e75207a20d5041 = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        { "attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false }
+    ).addTo(map_bd0249581ae2d13ca218628ce9ad97df);
+
+
+    var marker_80f6941134aba966bc9690c84effdc5d = L.marker(
+        [37.6481473, 127.0133858],
+        {}
+    ).addTo(map_bd0249581ae2d13ca218628ce9ad97df);
+
+
+    var icon_fa4f2a314ba6b2b34f0278e1db330a53 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_80f6941134aba966bc9690c84effdc5d.setIcon(icon_fa4f2a314ba6b2b34f0278e1db330a53);
+
+
+    var popup_1ed0d6a5360cc5b5c6cc497d8466995b = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20220303_072828.png" });
+
+
+
+    var i_frame_16e32f6cadb694e5a4acea88d3c1445c = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+7ISx7ISx7Iud64u5IDQxOeyCrOqxsOumrOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTY5NTMtNDE5MDxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauCDqsJXrtoHqtawg7IiY7Jyg64+ZIDI3OS0xMjYgMey4tTxicj48YnI+PGI+7JiB7JeF7Iuc6rCEPC9iPiA6IDEzOjAwIH4gMDE6MDAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDIyMDMwM18wNzI4MjgucG5nJ3dpZHRoPSczMDAnIGhlaWdodD0nMjAwJz4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_1ed0d6a5360cc5b5c6cc497d8466995b.setContent(i_frame_16e32f6cadb694e5a4acea88d3c1445c);
+
+
+
+    marker_80f6941134aba966bc9690c84effdc5d.bindPopup(popup_1ed0d6a5360cc5b5c6cc497d8466995b)
+        ;
+
+
+
+
+    marker_80f6941134aba966bc9690c84effdc5d.bindTooltip(
+        `<div>
+                     419사거리점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_3e134ed7e60c4024598cb4b9d9de2ae9 = L.marker(
+        [37.5861565, 127.0309144],
+        {}
+    ).addTo(map_bd0249581ae2d13ca218628ce9ad97df);
+
+
+    var icon_4f4999ef3adb9fde3dcb6b1cda7ecd93 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_3e134ed7e60c4024598cb4b9d9de2ae9.setIcon(icon_4f4999ef3adb9fde3dcb6b1cda7ecd93);
+
+
+    var popup_183a411b7072dcba322f1cef24f87b0f = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20211206_002036.png" });
+
+
+
+    var i_frame_a4d67095b2a40eb890d274c3428b5da6 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+7ISx7ISx7Iud64u5IOqzoOuMgOyViOyVlOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTkyOS0wMTI1PGJyPjxicj48Yj7sp4DsoJDso7zshow8L2I+IDog7ISc7Jq4IOyEseu2geq1rCDqs6DroKTrjIDroZwyNOq4uCA1OC01ICjslYjslZTrj5k16rCALCDqs6DroKTslYjslZTruYzrlKkpIDLsuLU8YnI+PGJyPjxiPuyYgeyXheyLnOqwhDwvYj4gOiAxMDowMH4yMjowMCA8YnI+PGJyPjxpbWcgc3JjID0gJ2h0dHBzOi8vdGhlYm9ybmRiLnRoZWJvcm4uY28ua3Ivd3AtY29udGVudC91cGxvYWRzLzIwMjExMjA2XzAwMjAzNi5wbmcnd2lkdGg9JzMwMCcgaGVpZ2h0PScyMDAnPg==" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_183a411b7072dcba322f1cef24f87b0f.setContent(i_frame_a4d67095b2a40eb890d274c3428b5da6);
+
+
+
+    marker_3e134ed7e60c4024598cb4b9d9de2ae9.bindPopup(popup_183a411b7072dcba322f1cef24f87b0f)
+        ;
+
+
+
+
+    marker_3e134ed7e60c4024598cb4b9d9de2ae9.bindTooltip(
+        `<div>
+                     고대안암점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_ba5b0f7968e1c106f9243b57e6f72455 = L.marker(
+        [37.5055667, 127.0218807],
+        {}
+    ).addTo(map_bd0249581ae2d13ca218628ce9ad97df);
+
+
+    var icon_7d3bc2c7e9b8d1d24c4516c6d5b07c89 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_ba5b0f7968e1c106f9243b57e6f72455.setIcon(icon_7d3bc2c7e9b8d1d24c4516c6d5b07c89);
+
+
+    var popup_775883f89fcef8341e6eb81612e6a652 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/ssssssssssss.png" });
+
+
+
+    var i_frame_6cb36995c1172d0536f273af3a4d2b55 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+7ISx7ISx7Iud64u5IOuwmO2PrOykkeyVmeygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTUxMi00NDc2PGJyPjxicj48Yj7sp4DsoJDso7zshow8L2I+IDog7ISc7Jq4IOyEnOy0iOq1rCDqsJXrgqjrjIDroZw4M+q4uCAzMyAo67CY7Y+s64+ZKSAx7Li1PGJyPjxicj48Yj7smIHsl4Xsi5zqsIQ8L2I+IDogMTE6MzB+MjI6MDAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy9zc3Nzc3Nzc3Nzc3MucG5nJ3dpZHRoPSczMDAnIGhlaWdodD0nMjAwJz4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_775883f89fcef8341e6eb81612e6a652.setContent(i_frame_6cb36995c1172d0536f273af3a4d2b55);
+
+
+
+    marker_ba5b0f7968e1c106f9243b57e6f72455.bindPopup(popup_775883f89fcef8341e6eb81612e6a652)
+        ;
+
+
+
+
+    marker_ba5b0f7968e1c106f9243b57e6f72455.bindTooltip(
+        `<div>
+                     반포중앙점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_64f3224a389d6026e803e9f9723e1c40 = L.marker(
+        [37.5921626, 127.0173763],
+        {}
+    ).addTo(map_bd0249581ae2d13ca218628ce9ad97df);
+
+
+    var icon_a06a1793a58d156dcf90823f92ae2c88 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_64f3224a389d6026e803e9f9723e1c40.setIcon(icon_a06a1793a58d156dcf90823f92ae2c88);
+
+
+    var popup_8ce77c92d0031e5325ebab4f5de6d642 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/untitled-28.png" });
+
+
+
+    var i_frame_0d01cfd6dfaeed43dd806868e46f9581 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+7ISx7ISx7Iud64u5IOyEseyLoOyXrOuMgOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTYwMTItMTQ2MDxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauCDshLHrtoHqtawg64+Z7IaM66y466GcIDIw64KY6ri4IDEzKOuPmeyEoOuPmTHqsIApMuy4tTxicj48YnI+PGI+7JiB7JeF7Iuc6rCEPC9iPiA6IDA5OjAwIC0gMjE6MDAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy91bnRpdGxlZC0yOC5wbmcnd2lkdGg9JzMwMCcgaGVpZ2h0PScyMDAnPg==" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_8ce77c92d0031e5325ebab4f5de6d642.setContent(i_frame_0d01cfd6dfaeed43dd806868e46f9581);
+
+
+
+    marker_64f3224a389d6026e803e9f9723e1c40.bindPopup(popup_8ce77c92d0031e5325ebab4f5de6d642)
+        ;
+
+
+
+
+    marker_64f3224a389d6026e803e9f9723e1c40.bindTooltip(
+        `<div>
+                     성신여대점
+                 </div>`,
+        { "sticky": true }
+    );
+
+</script>
+
+</html>

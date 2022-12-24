@@ -1,0 +1,188 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+    <script defer src="{% static 'js/10000hours.js' %}"></script>
+    <title>매장정보보기</title>
+
+    <style>
+
+
+    </style>
+</head>
+
+
+<body>
+  <div>
+    
+    <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+      <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+    </div>
+  </div>
+  <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+    <ul class="nav-container" style="text-align : center;">
+      <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white">HOME</font></a></li>
+      <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+      <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+      <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+      <li class="nav-item"><label for ="before"><font size="4em" color="white">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+    </ul>
+  </div>
+
+  <script>
+    function history_back() {
+        history.back();
+    }
+  </script>
+
+  <div style="width: 100%; text-align : center; margin-top: 100px;">
+    <div style="display: inline-block;">
+
+      <table style="text-align : center; margin-top: 10px; margin-bottom: 0px; width: 600px; height: 900px;">
+        <th><font size="6em" color="black">번호</font></th>
+        <th><font size="6em" color="black">매장명</font></th>
+        <th><font size="6em" color="black">지도링크</font></th>
+        <tr>
+          <td>1</td>
+          <td>고투웍</td>
+          <td><a href="{% url 'mysite:gotowork' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>구내식당</td>
+          <td><a href="{% url 'mysite:gunae' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>돌배기집</td>
+          <td><a href="{% url 'mysite:dol' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>롤링파스타</td>
+          <td><a href="{% url 'mysite:rol' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>리춘시장</td>
+          <td><a href="{% url 'mysite:lee' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>막이오름</td>
+          <td><a href="{% url 'mysite:mak' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>미정국수0410</td>
+          <td><a href="{% url 'mysite:mij' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>백's비빔밥</td>
+          <td><a href="{% url 'mysite:bac1' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>백's비어</td>
+          <td><a href="{% url 'mysite:bac2' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>백철판0410</td>
+          <td><a href="{% url 'mysite:bac3' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>본가</td>
+          <td><a href="{% url 'mysite:bon' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>분식9단</td>
+          <td><a href="{% url 'mysite:bun' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>빽다방</td>
+          <td><a href="{% url 'mysite:bac4' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>빽보이피자</td>
+          <td><a href="{% url 'mysite:bac5' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>새마을식당</td>
+          <td><a href="{% url 'mysite:sae' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>성성식당</td>
+          <td><a href="{% url 'mysite:sun' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td>역전우동0410</td>
+          <td><a href="{% url 'mysite:yuk' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td>연돈볼카츠</td>
+          <td><a href="{% url 'mysite:yeo' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td>원조쌈밥집</td>
+          <td><a href="{% url 'mysite:one' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td>인생설렁탕</td>
+          <td><a href="{% url 'mysite:ins' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>제순식당</td>
+          <td><a href="{% url 'mysite:jes' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>한신포차</td>
+          <td><a href="{% url 'mysite:han' %}"> 바로가기</a></td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>홍콩반점0410</td>
+          <td><a href="{% url 'mysite:hon' %}"> 바로가기</a></td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top: 250px;">
+      <div style="display: inline-block; margin-left: 100px;">누적 방문자수 : {{count}}명</div>
+      <div style="display: inline-block; margin-left: 50px;">누적 추천횟수 : {{rec_count}}회</div>
+  </div>
+
+  <br>
+  <hr size="3px" width="90%">
+  <section id="copyright">
+      
+      <p>
+          ※ 본 서비스의 저작권은 멀티캠퍼스 데이터사이언스/엔지니어링 3팀 식스시그마에 있습니다.<br>
+          수정 및 재배포, 무단 도용 시 법적인 문제가 발생할 수 있습니다.
+      </p>
+  </section>
+
+</body>
+</html>

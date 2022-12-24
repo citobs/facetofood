@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    {% block style%}
+
+    {% endblock %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+    <script defer src="{% static 'js/10000hours.js' %}"></script>
+    <title>매장정보보기</title>
+
+    <style>
+
+    </style>
+</head>
+
+
+<body>
+  <div>
+      <a href="{% url 'mysite:base1' %}">
+      <div style="text-align : center; margin-top: 10px; margin-bottom: 0px;"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="90%" height="200" title="홈페이지로고"></div></a>
+  </div>
+
+  <ul class="nav-container" style="text-align : center;">
+      <li class="nav-item"><a href="{% url 'mysite:base1' %}">HOME</a></li>
+      <li class="nav-item"><a href="">추천기록보기</a></li>
+      <li class="nav-item"><a href="{% url 'mysite:map' %}">매장정보보기</a></li>
+      <li class="nav-item"><a href="{% url 'mysite:new_post' %}">다시추천받기</a></li>
+      <li class="nav-item"><a href="{% url 'mysite:base1' %}">이전페이지</a></li>
+  </ul>
+
+
+{% block content %}
+
+
+{% for list in postlist %}
+<ul class="no9">
+    <li>
+        순번:{{list.pk}}
+        작성자:{{ list.postname }}<br>
+        내용:{{ list.contents }}<br>
+        <!-- 사진 :<img src="{{ list.mainphoto.url }}" alt="" height="600"> -->
+        <a href="{% url 'mysite:show' %}">삭제하기</a>
+
+    </li>
+</ul>
+{% endfor %}
+<!-- 삭제 기능 추가-->
+<!-- <input type="button" class="btnDelete" , src=".html" value="삭제"> -->
+
+{% endblock %}
+
+</body>
+</html>

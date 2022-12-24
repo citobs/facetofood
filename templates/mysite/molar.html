@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+    <script defer src="{% static 'js/10000hours.js' %}"></script>
+    <title>중립감정선택</title>
+
+    <style>
+        .filebox label {
+        display: inline-block;
+        padding: .5em .75em;
+        color: rgb(255, 255, 255);
+        font-family: 'GmarketSansBold';
+        font-size: 20px;
+        background-color: #ffffff;
+        cursor: pointer;
+        border: 0px solid #ebebeb;
+        border-bottom-color: #e2e2e2;
+        border-radius: .25em;
+        }
+
+        .filebox input[type="file"] {  /* 파일 필드 숨기기 */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip:rect(0,0,0,0);
+        border: 0;
+        }
+
+        .btn-recommend {
+        background-color: #ffffff;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div>
+    
+        <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+          <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+        </div>
+      </div>
+      <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+        <ul class="nav-container" style="text-align : center;">
+          <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white">HOME</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+          <li class="nav-item"><label for ="before"><font size="4em" color="white">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+        </ul>
+      </div>
+
+      <script>
+        function history_back() {
+            history.back();
+        }
+      </script>
+
+    <div style="text-align : center; margin-top: 150px;"><font size="10em" color="black"><b>감정을 읽을 수 없어요</b></font></div>
+    <div style="text-align : center; margin-top: 80px; margin-bottom: 80px;">
+        <img src="{% static 'img/down_navy.png' %}" alt="아래화살표" width="120px" height="100px" title="아래화살표">
+    </div>
+
+    <div style="text-align : center;"><font size="5em" color="black"><b>메뉴 추천을 위해 <br><br>다음 중 가장 가까운 감정을 선택해주세요</b></font></div>
+    <div style="text-align : center; margin-top: 80px; margin-bottom: 80px;">
+        <img src="{% static 'img/down_navy.png' %}" alt="아래화살표" width="120px" height="100px" title="아래화살표">
+    </div>
+    </p>
+    <!-- <form action="{% url 'mysite:food_list1' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+    <div style="width: 100%; text-align : center;">
+        <div class = "filebox" style="display: inline-block;"><label for ="file"><img  src="/static/img/angry_button1.png" width="180"></label><input type="submit" id="file" name="angry" value="화남" ></div>
+        <div class = "filebox" style="display: inline-block;"><label for ="file"><img  src="/static/img/happy_button1.png" width="180"></label><input type="submit" id="file" name="happy" value="기쁨" ></div>
+        <div class = "filebox" style="display: inline-block;"><label for ="file"><img  src="/static/img/sad_button1.png" width="180"></label><input type="submit" id="file"name="sad" value="슬픔" ></div>
+    </div>
+    <input type="submit" name="angry" value="화남">
+    <input type="submit" name="happy" value="기쁨">
+    <input type="submit" name="sad" value="슬픔"></form>
+    {{a}} -->
+
+    <form action="{% url 'mysite:food_list1' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div style="width: 100%; text-align : center;">
+        <div style="display: inline-block;"><button type="submit" name="angry" class = "btn-recommend" value="글쓰기"><img  src="/static/img/angry_button1.png" width="180"></button></div>
+        <div style="display: inline-block;"><button type="submit" name="happy" class = "btn-recommend" value="글쓰기"><img  src="/static/img/happy_button1.png" width="180"></button></div>
+        <div style="display: inline-block;"><button type="submit" name="sad" class = "btn-recommend" value="글쓰기"><img  src="/static/img/sad_button1.png" width="180"></button></div>
+    </div>
+    </form>
+
+
+    <!-- <div style="margin-top: 200px;">
+        <div style="display: inline-block; margin-left: 100px;">누적 방문자수 :{{count}} 명</div>
+        <div style="display: inline-block; margin-left: 50px;">누적 추천횟수 :{{rec_count}} 회</div>
+    </div> -->
+    <div style="text-align : center; margin-top: 200px;">
+        <hr size="3px" width="90%">
+        <section id="copyright">
+            
+            <p>
+                ※ 본 서비스의 저작권은 멀티캠퍼스 데이터사이언스/엔지니어링 3팀 식스시그마에 있습니다.<br>
+                수정 및 재배포, 무단 도용 시 법적인 문제가 발생할 수 있습니다.
+            </p>
+        </section>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,64 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+    <title>추천기록보기</title>
+</head>
+
+<body>
+    <div>
+    
+        <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+          <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+        </div>
+      </div>
+      <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+        <ul class="nav-container" style="text-align : center;">
+          <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white">HOME</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+          <li class="nav-item"><label for ="before"><font size="4em" color="white">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+        </ul>
+      </div>
+
+      <script>
+        function history_back() {
+            history.back();
+        }
+      </script>
+
+    <div class="main_text0">
+        <div class="contents1">
+            오늘의 방문자 수는 <span style="font:italic bold 3em/3em Geogia, serif;color:red;"> {{count}} </span> 명 입니다<br>
+        </div>
+
+        <table class="t9">
+            <th>감정분류</th>
+            <th>생성날짜</th>
+            <th>음식종류</th>
+            {% for li in foodlist %}
+            <tr>
+                <td>{{li}}</td>
+                <td>{{li.created_at}}</td>
+                <td>{{ li.menu }}</td>
+                {% endfor %}
+            </tr>
+            <!-- 생성날짜:{{li.created_at}}, 음식검색 : {{ li.menu }}<br> -->
+        </table>
+
+
+
+</body>
+</html>

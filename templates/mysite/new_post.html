@@ -1,0 +1,262 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+    <script defer src="{% static 'js/10000hours.js' %}"></script>
+    <title>이미지 업로드</title>
+
+    <style>
+        .drop-zone {
+            
+            height: 400px;
+            width: 700px;
+            background-color: rgb(248, 241, 241);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size : 14;
+            color: rgb(5, 5, 5);
+            text-align : center;
+            margin-top: 20px;
+            margin-left: 300px;
+            margin-right: 300px;
+            border: 10px solid #173660;
+        }
+    
+        .drop-zone-dragenter,
+        .drop-zone-dragover {
+            border: 10px solid blue;
+        }
+
+        .filebox label {
+        display: inline-block;
+        padding: .5em .75em;
+        color: rgb(255, 255, 255);
+        font-family: 'GmarketSansBold';
+        font-size: 20px;
+        background-color: rgb(255, 255, 255);
+        cursor: pointer;
+        border: 0px solid rgb(255, 255, 255);
+        border-bottom-color:rgb(255, 255, 255);
+        border-radius: .25em;
+        }
+
+        .filebox input[type="file"] {  /* 파일 필드 숨기기 */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip:rect(0,0,0,0);
+        border: 0;
+        }
+
+        .btn-recommend {
+        background-color: #ffffff;
+        }
+
+
+    </style>
+</head>
+
+
+<body>
+    <div>
+    
+        <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+          <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+        </div>
+
+      <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+        <ul class="nav-container" style="text-align : center;">
+          <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white">HOME</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+          <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+          <li class="nav-item"><label for ="before"><font size="4em" color="white">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+        </ul>
+      </div>
+
+      <script>
+        function history_back() {
+            history.back();
+        }
+      </script>
+
+    <div style="text-align : center; margin-top: 150px; margin-bottom: 100px;"><font size="10em" color="black"><b>분석에 사용할 얼굴 이미지를 업로드하세요!</b></font></div>
+
+    <div style="text-align : center; margin-top: 0px; margin-bottom: 100px;">
+        <img src="{% static 'img/down_navy.png' %}" alt="아래화살표" width="120px" height="100px" title="아래화살표">
+    </div>
+
+    <!-- 안내문 영역 -->
+    <div style="text-align : center;">
+        <font size="5em" color="black"><b>더욱 정확한 분석 결과를 원하신다면<br><br>주변의 방해요소를 잘라내신 후 <br><br>가운데에 얼굴을 놓아주세요</b></font>
+    </div>
+
+    <!-- 안내문 사진 -->
+    <div style="text-align : center; margin-top: 80px; margin-bottom: 70px;"><img src="{% static 'img/info1.png' %}" alt="안내문" width="50%" title="안내문"></div>
+
+    <div style="text-align : center; margin-top: 0px; margin-bottom: 100px;">
+        <img src="{% static 'img/down_navy.png' %}" alt="아래화살표" width="120px" height="100px" title="아래화살표">
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 파일업로드 & 안내문 영역 -->
+    <div style="width: 100%; text-align : center;">
+
+        <!-- 파일업로드 영역 -->
+        <div style="display: inline-block; text-align : center;">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <br><br>
+                <div class="drop-zone">
+                    <font size="5em" color="black">파일을 선택하거나 여기로 드래그하세요.</font><br>
+                    <!-- <div class = "filebox" style="display: inline-block;"><label for ="file"><img  src="/static/img/file_selection1.png" width="140"></label><input style="border:none; background: none;" type="file" id="file" name="mainphoto" ></div> -->
+                </div>
+                <div style="text-align: right ; margin-right: 285px;">
+                <div class = "filebox" style="display: inline-block;"><label for ="file"><img  src="/static/img/file_selection2.png" width="120"></label><input type="file" id="file" name="mainphoto" ></div>
+                </div>
+
+
+                <br><br>
+                <div style="width: 100%; text-align : center;">
+                    <div style="display: inline-block;"><button type="submit" class = "btn-recommend" value="글쓰기"><img  src="/static/img/recommend_go1.png" width="180"></button></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+
+        (function () {
+
+            var $file = document.getElementById("file")
+            var dropZone = document.querySelector(".drop-zone")
+
+            var toggleClass = function (className) {
+
+                console.log("current event: " + className)
+
+                var list = ["dragenter", "dragleave", "dragover", "drop"]
+
+                for (var i = 0; i < list.length; i++) {
+                    if (className === list[i]) {
+                        dropZone.classList.add("drop-zone-" + list[i])
+                    } else {
+                        dropZone.classList.remove("drop-zone-" + list[i])
+                    }
+                }
+            }
+
+            var showFiles = function (files) {
+                dropZone.innerHTML = ""
+                for (var i = 0, len = files.length; i < len; i++) {
+                    dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+                }
+            }
+
+            var selectFile = function (files) {
+                // input file 영역에 드랍된 파일들로 대체
+                $file.files = files
+                showFiles($file.files)
+
+            }
+
+            $file.addEventListener("change", function (e) {
+                showFiles(e.target.files)
+            })
+
+            // 드래그한 파일이 최초로 진입했을 때
+            dropZone.addEventListener("dragenter", function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                toggleClass("dragenter")
+
+            })
+
+            // 드래그한 파일이 dropZone 영역을 벗어났을 때
+            dropZone.addEventListener("dragleave", function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                toggleClass("dragleave")
+
+            })
+
+            // 드래그한 파일이 dropZone 영역에 머물러 있을 때
+            dropZone.addEventListener("dragover", function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                toggleClass("dragover")
+
+            })
+
+            // 드래그한 파일이 드랍되었을 때
+            dropZone.addEventListener("drop", function (e) {
+                e.preventDefault()
+
+                toggleClass("drop")
+
+                var files = e.dataTransfer && e.dataTransfer.files
+                console.log(files)
+
+                if (files != null) {
+                    if (files.length < 1) {
+                        alert("폴더 업로드 불가")
+                        return
+                    }
+                    selectFile(files)
+                } else {
+                    alert("ERROR")
+                }
+
+            })
+
+        })();
+
+
+    </script>
+
+    <div style="margin-top: 250px;">
+        <div style="display: inline-block; margin-left: 100px;">누적 방문자수 : {{count}}명</div>
+        <div style="display: inline-block; margin-left: 50px;">누적 추천횟수 : {{rec_count}}회</div>
+    </div>
+
+    <br>
+    <hr size="3px" width="90%">
+    <section id="copyright">
+        
+        <p>
+            ※ 본 서비스의 저작권은 멀티캠퍼스 데이터사이언스/엔지니어링 3팀 식스시그마에 있습니다.<br>
+            수정 및 재배포, 무단 도용 시 법적인 문제가 발생할 수 있습니다.
+        </p>
+    </section>
+</body>
+
+</html>
+
+
+

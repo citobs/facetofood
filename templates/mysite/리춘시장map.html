@@ -1,0 +1,562 @@
+<!-- 추가 -->
+{% load static %}
+<!-- 추가끝 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+            <!-- 추가 -->
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="shortcut icon" href="{% static 'img/main_icon10.png' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+            <link rel="stylesheet" type="text/css" href="{% static 'css/10000hours.css' %}">
+            <script defer src="{% static 'js/10000hours.js' %}"></script>
+            <title>매장정보보기</title>
+            <!-- 추가끝 -->
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+
+        /* 추가 */
+        hr {
+            height: 1px;
+            background-color: black !important;
+            border-color: black !important;
+            color :black !important;
+        }
+
+        .count {
+            font-family: 'GmarketSansMedium'!important;
+            font-size: 16px !important;
+            background-color: rgb(255, 255, 255) !important;
+            color: rgb(0, 0, 0) !important;
+        }
+/* 추가끝 */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css" />
+
+    <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style>
+        #map_efea8691ecc5c68310e2ec6bf3a09b1e {
+                    /* 변경 */
+                    text-align: center;
+                    position: relative;
+                    width: 70%;
+                    height: 700px;
+                    left: 0.0%;
+                    top: 0.0%;
+                    margin-left: 15%;
+                    margin-right: 15%;
+                    /* 변경끝 */
+        }
+    </style>
+
+</head>
+
+<body>
+            <!-- 추가 -->
+            <div>
+    
+                <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+                    <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%" height="200" title="홈페이지로고"></a>
+                </div>
+        
+                </div>
+                <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+                <ul class="nav-container" style="text-align : center; height: 48px; margin-top: 5px; font-family: 'GmarketSansMedium'!important;">
+                    <li class="nav-item"><a href="{% url 'mysite:base1' %}"><font size="4em" color="white" >HOME</font></a></li>
+                    <li class="nav-item"><a href="{% url 'mysite:final' %}"><font size="4em" color="white">선택기록보기</font></a></li>
+                    <li class="nav-item"><a href="{% url 'mysite:map' %}"><font size="4em" color="white">매장정보보기</font></a></li>
+                    <li class="nav-item"><a href="{% url 'mysite:new_post' %}"><font size="4em" color="white">메뉴추천받기</font></a></li>
+                    <li class="nav-item"><label for ="before"><font size="4em" color="white" font-family = "GmarketSansMedium">이전페이지</font></label><input type ="button" id="before"style="display:none; visiblity:hidden ;" onclick="history_back()"></li>
+                </ul>
+            </div>
+    
+            <script>
+                function history_back() {
+                    history.back();
+                }
+              </script>
+        
+            <div style="text-align : center; margin-bottom: 80px; margin-top: 80px;">
+                <b><font size="12em" color="red">리춘시장</font><font size="10em" color="black"> 지도보기 </font></b>
+            </div>
+        
+            <!-- 안내문 영역 -->
+            <!-- <div style="text-align : center; margin-bottom: 40px;">
+                <font size="5em" color="black"><b>지도 위 핀을 클릭하면<br><br>지점 주소, 전화번호, 운영시간 등 <br><br>다양한 정보 확인이 가능합니다</b></font>
+            </div> -->
+            <div style="text-align : center; margin-bottom: 20px;">
+                <font size="3em" color="black"><b>지도 위 핀을 클릭하면 지점 주소, 전화번호, 운영시간 등 다양한 정보 확인이 가능합니다</b></font>
+            </div>
+            <!-- 추가끝 -->
+
+
+    <div class="folium-map" id="map_efea8691ecc5c68310e2ec6bf3a09b1e"></div>
+
+            <!-- 추가 -->
+            <div class = "count" style="margin-top: 250px;">
+                <div style="display: inline-block; margin-left: 100px;">누적 방문자수 : {{count}}명</div>
+                <div style="display: inline-block; margin-left: 50px;">누적 추천횟수 : {{rec_count}}회</div>
+            </div>
+          
+            <br>
+            <div >
+            <hr size="3px" width="90%">
+            <section id="copyright">
+                
+                <p>
+                    ※ 본 서비스의 저작권은 멀티캠퍼스 데이터사이언스/엔지니어링 3팀 식스시그마에 있습니다.<br>
+                    수정 및 재배포, 무단 도용 시 법적인 문제가 발생할 수 있습니다.
+                </p>
+            </section>
+            </div>
+            <!-- 추가끝 -->
+</body>
+<script>
+
+
+    var map_efea8691ecc5c68310e2ec6bf3a09b1e = L.map(
+        "map_efea8691ecc5c68310e2ec6bf3a09b1e",
+        {
+            center: [37.559819, 126.963895],
+            crs: L.CRS.EPSG3857,
+            zoom: 11,
+            zoomControl: true,
+            preferCanvas: false,
+        }
+    );
+
+
+
+
+
+    var tile_layer_6d87eba1bf8f98f27825c11ca801c96d = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        { "attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false }
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var marker_729e426ef74236f46d92b029d35bc310 = L.marker(
+        [37.5002493, 127.0275166],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_fc48fd41cd79733a70a033277a41d460 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_729e426ef74236f46d92b029d35bc310.setIcon(icon_fc48fd41cd79733a70a033277a41d460);
+
+
+    var popup_9df7c1686092ea2d46c1ac5cf5fb64e1 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20220617_152412.png" });
+
+
+
+    var i_frame_7732537c64cc34b31982f58aaac96d30 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOqwleuCqOyXreygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDA3MC04NjMzLTgyODA8YnI+PGJyPjxiPuyngOygkOyjvOyGjDwvYj4gOiDshJzsmrjtirnrs4Tsi5wg6rCV64Ko6rWsIO2FjO2XpOuegOuhnDHquLggMzAgMuy4tTxicj48YnI+PGI+7JiB7JeF7Iuc6rCEPC9iPiA6IDE3OjAwIH4gMDE6MDAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDIyMDYxN18xNTI0MTIucG5nJ3dpZHRoPSczMDAnIGhlaWdodD0nMjAwJz4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_9df7c1686092ea2d46c1ac5cf5fb64e1.setContent(i_frame_7732537c64cc34b31982f58aaac96d30);
+
+
+
+    marker_729e426ef74236f46d92b029d35bc310.bindPopup(popup_9df7c1686092ea2d46c1ac5cf5fb64e1)
+        ;
+
+
+
+
+    marker_729e426ef74236f46d92b029d35bc310.bindTooltip(
+        `<div>
+                     강남역점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_4acab53bc71a65325dfe1c9045770e24 = L.marker(
+        [37.5500909, 126.9177801],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_207650830831b11751021c472196fcc4 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_4acab53bc71a65325dfe1c9045770e24.setIcon(icon_207650830831b11751021c472196fcc4);
+
+
+    var popup_70eb734edbc6d01a4c95729304faac7a = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20220303_072927.png" });
+
+
+
+    var i_frame_6d985b7873ea4f0354b2995ed1c49cd9 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIO2VqeygleyXreygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTMzMy04OTU5PGJyPjxicj48Yj7sp4DsoJDso7zshow8L2I+IDog7ISc7Jq4IOuniO2PrOq1rCDshJzqtZDrj5kgMzk3LTEwIDHsuLU8YnI+PGJyPjxiPuyYgeyXheyLnOqwhDwvYj4gOiAxMTowMH4yMjowMCA8YnI+PGJyPjxpbWcgc3JjID0gJ2h0dHBzOi8vdGhlYm9ybmRiLnRoZWJvcm4uY28ua3Ivd3AtY29udGVudC91cGxvYWRzLzIwMjIwMzAzXzA3MjkyNy5wbmcnd2lkdGg9JzMwMCcgaGVpZ2h0PScyMDAnPg==" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_70eb734edbc6d01a4c95729304faac7a.setContent(i_frame_6d985b7873ea4f0354b2995ed1c49cd9);
+
+
+
+    marker_4acab53bc71a65325dfe1c9045770e24.bindPopup(popup_70eb734edbc6d01a4c95729304faac7a)
+        ;
+
+
+
+
+    marker_4acab53bc71a65325dfe1c9045770e24.bindTooltip(
+        `<div>
+                     합정역점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_70f83d8f117a7cdfb6d6e13ee4b52496 = L.marker(
+        [37.4692683, 126.8991235],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_8e0bb2e4a12a5683a201cf966a6a1282 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_70f83d8f117a7cdfb6d6e13ee4b52496.setIcon(icon_8e0bb2e4a12a5683a201cf966a6a1282);
+
+
+    var popup_d69a1b34c0d4ad9fbe6aecaf2ae197a6 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20220104_081314.png" });
+
+
+
+    var i_frame_453a51222cfa3eb54892777e3a8a316e = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOuPheyCsOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTIxMzUtOTg1NDxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauCDquIjsspzqtawg7Iuc7Z2l64yA66GcMTIy6ri4IDE2PGJyPjxicj48Yj7smIHsl4Xsi5zqsIQ8L2I+IDogMTY6MDAgfiAyMTowMCAo6rGw66as65GQ6riwIO2bhCDrs4Dqsr0gLT4gMDI6MDApIDxicj48YnI+PGltZyBzcmMgPSAnaHR0cHM6Ly90aGVib3JuZGIudGhlYm9ybi5jby5rci93cC1jb250ZW50L3VwbG9hZHMvMjAyMjAxMDRfMDgxMzE0LnBuZyd3aWR0aD0nMzAwJyBoZWlnaHQ9JzIwMCc+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_d69a1b34c0d4ad9fbe6aecaf2ae197a6.setContent(i_frame_453a51222cfa3eb54892777e3a8a316e);
+
+
+
+    marker_70f83d8f117a7cdfb6d6e13ee4b52496.bindPopup(popup_d69a1b34c0d4ad9fbe6aecaf2ae197a6)
+        ;
+
+
+
+
+    marker_70f83d8f117a7cdfb6d6e13ee4b52496.bindTooltip(
+        `<div>
+                     독산점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_f331e86e7c31dbd1636c3d9d3e76f453 = L.marker(
+        [37.5594933, 126.9235036],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_12ee853a5d799c511214a2f11e56d927 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_f331e86e7c31dbd1636c3d9d3e76f453.setIcon(icon_12ee853a5d799c511214a2f11e56d927);
+
+
+    var popup_25ab5760f56a1a2de068f8a8068b7813 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20210913_021706.png" });
+
+
+
+    var i_frame_b8de953bab80f9d664fb06e2ff07f4b5 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyXsOuCqOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTMzMi02MzIwPGJyPjxicj48Yj7sp4DsoJDso7zshow8L2I+IDog7ISc7Jq4IOuniO2PrOq1rCDrj5nqtZDroZwgMjE3ICjrj5nqtZDrj5ksIO2ZjeuMgExK67mM65SpKSAx7Li1PGJyPjxicj48Yj7smIHsl4Xsi5zqsIQ8L2I+IDogMTI6MDB+MjI6MDAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDIxMDkxM18wMjE3MDYucG5nJ3dpZHRoPSczMDAnIGhlaWdodD0nMjAwJz4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_25ab5760f56a1a2de068f8a8068b7813.setContent(i_frame_b8de953bab80f9d664fb06e2ff07f4b5);
+
+
+
+    marker_f331e86e7c31dbd1636c3d9d3e76f453.bindPopup(popup_25ab5760f56a1a2de068f8a8068b7813)
+        ;
+
+
+
+
+    marker_f331e86e7c31dbd1636c3d9d3e76f453.bindTooltip(
+        `<div>
+                     연남점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_e1727145a24cbcfec41f7f050f4d83d8 = L.marker(
+        [37.5915572, 127.0171646],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_80885d0f407d95d7c14f86d0ce57329d = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_e1727145a24cbcfec41f7f050f4d83d8.setIcon(icon_80885d0f407d95d7c14f86d0ce57329d);
+
+
+    var popup_8b0006fcb2bef4057a58208edf70c84d = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20210202_091709.jpg" });
+
+
+
+    var i_frame_35e8e6c3b93884b69558d7bb5ed77481 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyEseyLoOyXrOuMgOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTYwODAtMDQxMDxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauCDshLHrtoHqtawg64+Z7IaM66y466GcMjDri6TquLg2IDHsuLU8YnI+PGJyPjxiPuyYgeyXheyLnOqwhDwvYj4gOiAxNzowMCB+IDIxOjAwIDxicj48YnI+PGltZyBzcmMgPSAnaHR0cHM6Ly90aGVib3JuZGIudGhlYm9ybi5jby5rci93cC1jb250ZW50L3VwbG9hZHMvMjAyMTAyMDJfMDkxNzA5LmpwZyd3aWR0aD0nMzAwJyBoZWlnaHQ9JzIwMCc+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_8b0006fcb2bef4057a58208edf70c84d.setContent(i_frame_35e8e6c3b93884b69558d7bb5ed77481);
+
+
+
+    marker_e1727145a24cbcfec41f7f050f4d83d8.bindPopup(popup_8b0006fcb2bef4057a58208edf70c84d)
+        ;
+
+
+
+
+    marker_e1727145a24cbcfec41f7f050f4d83d8.bindTooltip(
+        `<div>
+                     성신여대점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_25a43ea5d49a91451460b3a1a8ea288a = L.marker(
+        [37.482951, 126.9283691],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_6339d3a293740d1b6f1968070c4f42e4 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_25a43ea5d49a91451460b3a1a8ea288a.setIcon(icon_6339d3a293740d1b6f1968070c4f42e4);
+
+
+    var popup_70ff793ad0a36fb08f2d3a5fe600a237 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20200826_012927.jpg" });
+
+
+
+    var i_frame_fa7c59285c2a60637c55709dfd89fd8e = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyLoOumvOyXreygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTg3NS0xODAyPGJyPjxicj48Yj7sp4DsoJDso7zshow8L2I+IDog7ISc7Jq47Yq567OE7IucIOq0gOyVheq1rCDsi6DrprzroZw1Oeq4uCAyNDxicj48YnI+PGI+7JiB7JeF7Iuc6rCEPC9iPiA6IDE3OjAwIH4g7J217J28IDAyOjAwIDxicj48YnI+PGltZyBzcmMgPSAnaHR0cHM6Ly90aGVib3JuZGIudGhlYm9ybi5jby5rci93cC1jb250ZW50L3VwbG9hZHMvMjAyMDA4MjZfMDEyOTI3LmpwZyd3aWR0aD0nMzAwJyBoZWlnaHQ9JzIwMCc+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_70ff793ad0a36fb08f2d3a5fe600a237.setContent(i_frame_fa7c59285c2a60637c55709dfd89fd8e);
+
+
+
+    marker_25a43ea5d49a91451460b3a1a8ea288a.bindPopup(popup_70ff793ad0a36fb08f2d3a5fe600a237)
+        ;
+
+
+
+
+    marker_25a43ea5d49a91451460b3a1a8ea288a.bindTooltip(
+        `<div>
+                     신림역점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_979bbfed025265bef6521631474d539c = L.marker(
+        [37.558649, 126.9364345],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_4a7906cb8464ada250e424621eca6ce9 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_979bbfed025265bef6521631474d539c.setIcon(icon_4a7906cb8464ada250e424621eca6ce9);
+
+
+    var popup_7e010a698d87fcfed1914ed14e9e3e70 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20200410_034037.jpg" });
+
+
+
+    var i_frame_a0f3685ccb825cdb6bb6b0f8992f29ed = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyLoOy0jOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTYwODQtMjY3Mzxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauO2KueuzhOyLnCDshJzrjIDrrLjqtawg7Jew7IS466GcOeq4uCAxMC00KOywveyynOuPmSAzMy0xMyk8YnI+PGJyPjxiPuyYgeyXheyLnOqwhDwvYj4gOiAxNzowMCB+IDAzOjAwIDxicj48YnI+PGltZyBzcmMgPSAnaHR0cHM6Ly90aGVib3JuZGIudGhlYm9ybi5jby5rci93cC1jb250ZW50L3VwbG9hZHMvMjAyMDA0MTBfMDM0MDM3LmpwZyd3aWR0aD0nMzAwJyBoZWlnaHQ9JzIwMCc+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_7e010a698d87fcfed1914ed14e9e3e70.setContent(i_frame_a0f3685ccb825cdb6bb6b0f8992f29ed);
+
+
+
+    marker_979bbfed025265bef6521631474d539c.bindPopup(popup_7e010a698d87fcfed1914ed14e9e3e70)
+        ;
+
+
+
+
+    marker_979bbfed025265bef6521631474d539c.bindTooltip(
+        `<div>
+                     신촌점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_54bf3a7e320d7f14665704542480b61f = L.marker(
+        [37.6192689, 126.9187287],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_1dc3e68b2055c678030420faef1f9127 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_54bf3a7e320d7f14665704542480b61f.setIcon(icon_1dc3e68b2055c678030420faef1f9127);
+
+
+    var popup_b03376d8b951510c118aba2162acf2dc = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20200410_035028.jpg" });
+
+
+
+    var i_frame_627e50013236eeb70baf56db36580e34 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyXsOyLoOuCtOyXreygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IC08YnI+PGJyPjxiPuyngOygkOyjvOyGjDwvYj4gOiDshJzsmrjsi5wg7J2A7Y+J6rWsIOyXsOyEnOuhnDI56ri4IDE0LTU8YnI+PGJyPjxiPuyYgeyXheyLnOqwhDwvYj4gOiAxNzozMCB+IDEyOjAwIDxicj48YnI+PGltZyBzcmMgPSAnaHR0cHM6Ly90aGVib3JuZGIudGhlYm9ybi5jby5rci93cC1jb250ZW50L3VwbG9hZHMvMjAyMDA0MTBfMDM1MDI4LmpwZyd3aWR0aD0nMzAwJyBoZWlnaHQ9JzIwMCc+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_b03376d8b951510c118aba2162acf2dc.setContent(i_frame_627e50013236eeb70baf56db36580e34);
+
+
+
+    marker_54bf3a7e320d7f14665704542480b61f.bindPopup(popup_b03376d8b951510c118aba2162acf2dc)
+        ;
+
+
+
+
+    marker_54bf3a7e320d7f14665704542480b61f.bindTooltip(
+        `<div>
+                     연신내역점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_2a4e777831b6010e8140aef5021700dd = L.marker(
+        [37.5839877, 127.0012885],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_f281c88c8d5a889cd7eefa2ff54bd923 = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_2a4e777831b6010e8140aef5021700dd.setIcon(icon_f281c88c8d5a889cd7eefa2ff54bd923);
+
+
+    var popup_2f51bc3e29ca75db6f32bc81b81a70c2 = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20191112_105651.png" });
+
+
+
+    var i_frame_aff370b511e9a1b74912b489f25ec5e8 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOuMgO2VmeuhnENHVuygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTM2NzMtMDQxMOKAizxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauO2KueuzhOyLnCDsooXroZzqtawg7Zic7ZmU64+ZIDE2Ny0zPGJyPjxicj48Yj7smIHsl4Xsi5zqsIQ8L2I+IDogMTE6MzB+MjM6MzAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE5MTExMl8xMDU2NTEucG5nJ3dpZHRoPSczMDAnIGhlaWdodD0nMjAwJz4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_2f51bc3e29ca75db6f32bc81b81a70c2.setContent(i_frame_aff370b511e9a1b74912b489f25ec5e8);
+
+
+
+    marker_2a4e777831b6010e8140aef5021700dd.bindPopup(popup_2f51bc3e29ca75db6f32bc81b81a70c2)
+        ;
+
+
+
+
+    marker_2a4e777831b6010e8140aef5021700dd.bindTooltip(
+        `<div>
+                     대학로CGV점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_9b067aadef10fc0bc69527fd1f7455a0 = L.marker(
+        [37.5175237, 126.9081241],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_c4aa827815a2dd766920b7371f18dffc = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_9b067aadef10fc0bc69527fd1f7455a0.setIcon(icon_c4aa827815a2dd766920b7371f18dffc);
+
+
+    var popup_863419036b5eed05c6943ef6a441b35f = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20190813_023056.jpg" });
+
+
+
+    var i_frame_c0aa7c0876e06ce7680a7c8ff272f7b6 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyYgeuTse2PrOyXreygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTI2MzQtMDQxMDxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauO2KueuzhOyLnCDsmIHrk7Htj6zqtawg7JiB7KSR66GcNOq4uCAzLCAx7Li1KOyYgeuTse2PrOuPmTPqsIApPGJyPjxicj48Yj7smIHsl4Xsi5zqsIQ8L2I+IDogMTY6MDAtMDI6MDAgPGJyPjxicj48aW1nIHNyYyA9ICdodHRwczovL3RoZWJvcm5kYi50aGVib3JuLmNvLmtyL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE5MDgxM18wMjMwNTYuanBnJ3dpZHRoPSczMDAnIGhlaWdodD0nMjAwJz4=" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_863419036b5eed05c6943ef6a441b35f.setContent(i_frame_c0aa7c0876e06ce7680a7c8ff272f7b6);
+
+
+
+    marker_9b067aadef10fc0bc69527fd1f7455a0.bindPopup(popup_863419036b5eed05c6943ef6a441b35f)
+        ;
+
+
+
+
+    marker_9b067aadef10fc0bc69527fd1f7455a0.bindTooltip(
+        `<div>
+                     영등포역점
+                 </div>`,
+        { "sticky": true }
+    );
+
+
+    var marker_e4f4d8ce81776db5f15065c33dce48bf = L.marker(
+        [37.4789734, 126.9537553],
+        {}
+    ).addTo(map_efea8691ecc5c68310e2ec6bf3a09b1e);
+
+
+    var icon_83d84251f188618ad38fdd772600ecbe = L.AwesomeMarkers.icon(
+        { "extraClasses": "fa-rotate-0", "icon": "star", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon" }
+    );
+    marker_e4f4d8ce81776db5f15065c33dce48bf.setIcon(icon_83d84251f188618ad38fdd772600ecbe);
+
+
+    var popup_17927b3b19f9403b323cda02be22a4af = L.popup({ "maxHeight": 1000, "maxWidth": 1500, "minHeight": 700, "minWidth": 400, "src": "https://theborndb.theborn.co.kr/wp-content/uploads/20190520_033628.jpg" });
+
+
+
+    var i_frame_51a73933324a1e1e1dd084c065089246 = $(`<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><iframe src="data:text/html;charset=utf-8;base64,CiAgICA8aDI+66as7LaY7Iuc7J6lIOyDpOuhnOyImOq4uOygkDxicj48aDQ+PGI+7KCE7ZmU67KI7Zi4PC9iPiA6IDAyLTY0NDgtMDQxMDxicj48YnI+PGI+7KeA7KCQ7KO87IaMPC9iPiA6IOyEnOyauCDqtIDslYXqtawg6rSA7JWF66GcMTTquLggMjIo67SJ7LKc64+ZIDE2MDQtMSk8YnI+PGJyPjxiPuyYgeyXheyLnOqwhDwvYj4gOiAxMTozMCAtIDIyOjAwIDxicj48YnI+PGltZyBzcmMgPSAnaHR0cHM6Ly90aGVib3JuZGIudGhlYm9ybi5jby5rci93cC1jb250ZW50L3VwbG9hZHMvMjAxOTA1MjBfMDMzNjI4LmpwZyd3aWR0aD0nMzAwJyBoZWlnaHQ9JzIwMCc+" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;"></iframe></div></div>`)[0];
+    popup_17927b3b19f9403b323cda02be22a4af.setContent(i_frame_51a73933324a1e1e1dd084c065089246);
+
+
+
+    marker_e4f4d8ce81776db5f15065c33dce48bf.bindPopup(popup_17927b3b19f9403b323cda02be22a4af)
+        ;
+
+
+
+
+    marker_e4f4d8ce81776db5f15065c33dce48bf.bindTooltip(
+        `<div>
+                     샤로수길점
+                 </div>`,
+        { "sticky": true }
+    );
+
+</script>
+
+</html>
