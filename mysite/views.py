@@ -85,7 +85,7 @@ def new_post(request):
 
                 ptlink = arr[-1]["mainphoto"]
                 
-                files = glob.glob(f'G:/web_study_1212/media/{ptlink}')
+                files = glob.glob('media/{}'.format(ptlink))
                 for f in files:
                     title, ext = os.path.splitext(f)
                     if ext in ['.jpg', '.png']:
@@ -163,7 +163,7 @@ def food_list1(request):
     
     model = load_model('g:/VGG16_BatchNor.h5') # 모델명
     
-    roi = cv2.imread(f'G:/web_study_1212/media/{ptlink}') # 파일 경로
+    roi = cv2.imread('media/{}'.format(ptlink)) # 파일 경로
     #roi = cv2.imread('media/{}'.format(arr[-1].mainphoto)) # 파일 경로
     
     w, h = 250, 250
