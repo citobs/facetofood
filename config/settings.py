@@ -15,8 +15,8 @@ SECRET_KEY = 'django-insecure-s7d#m2x%--c^!5*i8_(d8f5ja+)prlo3w6+bxt7lx(#ugm8)n9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
+#모든 사이트 허용
 
 # Application definition
 
@@ -35,11 +35,14 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware', # csrf 토큰 무력화 방법중하나 이부분을 주석처리하면된다.
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+#ngrok csrf 인증방법 장고가 버전업되면서 대응하는 방식이 생성됨 ([]안에 ngrok주소 입력하기! 주의 NGROK주소는 바뀐다!)
+CSRF_TRUSTED_ORIGINS = ['https://296f-211-198-98-17.jp.ngrok.io']
 
 ROOT_URLCONF = 'config.urls'
 
