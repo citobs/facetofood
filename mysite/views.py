@@ -161,7 +161,7 @@ def food_list1(request):
 
     ptlink = arr[-1]["mainphoto"]
     
-    model = load_model('g:/VGG16_BatchNor.h5') # 모델명
+    model = load_model('../VGG16_BatchNor.h5') # 모델명
     
     roi = cv2.imread('media/{}'.format(ptlink)) # 파일 경로
     #roi = cv2.imread('media/{}'.format(arr[-1].mainphoto)) # 파일 경로
