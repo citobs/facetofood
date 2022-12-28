@@ -5,7 +5,7 @@
 
 <head>
     {% block style%}
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% endblock %}
 
     <meta charset="UTF-8">
@@ -23,39 +23,55 @@
 
 
 <body>
-  <div>
-      <a href="{% url 'mysite:base1' %}">
-      <div style="text-align : center; margin-top: 10px; margin-bottom: 0px;"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="90%" height="200" title="홈페이지로고"></div></a>
-  </div>
+    <div>
 
-  <ul class="nav-container" style="text-align : center;">
-      <li class="nav-item"><a href="{% url 'mysite:base1' %}">HOME</a></li>
-      <li class="nav-item"><a href="">추천기록보기</a></li>
-      <li class="nav-item"><a href="{% url 'mysite:map' %}">매장정보보기</a></li>
-      <li class="nav-item"><a href="{% url 'mysite:new_post' %}">다시추천받기</a></li>
-      <li class="nav-item"><a href="{% url 'mysite:base1' %}">이전페이지</a></li>
-  </ul>
+        <div style="margin-left: 75px; margin-right: 75px; margin-top: 10px; margin-bottom: 0px; width: 90%;">
+            <a href="{% url 'mysite:base1' %}"><img src="{% static 'img/top10.png' %}" alt="홈페이지로고" width="100%"
+                    height="200" title="홈페이지로고"></a>
+        </div>
+    </div>
+    <div style="text-align : center ;margin-bottom: 0px; margin-top: 0px;">
+        <ul class="nav-container" style="text-align : center;">
+            <li class="nav-item"><a href="{% url 'mysite:base1' %}">
+                    <font size="4em" color="white">HOME</font>
+                </a></li>
+            <li class="nav-item"><a href="{% url 'mysite:final' %}">
+                    <font size="4em" color="white">선택기록보기</font>
+                </a></li>
+            <li class="nav-item"><a href="{% url 'mysite:map' %}">
+                    <font size="4em" color="white">매장정보보기</font>
+                </a></li>
+            <li class="nav-item"><a href="{% url 'mysite:new_post' %}">
+                    <font size="4em" color="white">메뉴추천받기</font>
+                </a></li>
+            <li class="nav-item"><label for="before">
+                    <font size="4em" color="white">이전페이지</font>
+                </label><input type="button" id="before" style="display:none; visiblity:hidden ;"
+                    onclick="history_back()"></li>
+        </ul>
+    </div>
 
 
-{% block content %}
+    {% block content %}
 
 
-{% for list in postlist %}
-<ul class="no9">
-    <li>
-        순번:{{list.pk}}
-        작성자:{{ list.postname }}<br>
-        내용:{{ list.contents }}<br>
-        <!-- 사진 :<img src="{{ list.mainphoto.url }}" alt="" height="600"> -->
-        <a href="{% url 'mysite:show' %}">삭제하기</a>
+    {% for list in postlist %}
+    <ul class="no9">
+        <li>
+            입력번호:{{list.pk}}
 
-    </li>
-</ul>
-{% endfor %}
-<!-- 삭제 기능 추가-->
-<!-- <input type="button" class="btnDelete" , src=".html" value="삭제"> -->
 
-{% endblock %}
+            입력된 사진보기 :<img src="{{ list.mainphoto.url }}" alt="" height="600">
+
+
+        </li>
+    </ul>
+    {% endfor %}
+    <!-- 삭제 기능 추가-->
+    <!-- <input type="button" class="btnDelete" , src=".html" value="삭제"> -->
+
+    {% endblock %}
 
 </body>
+
 </html>

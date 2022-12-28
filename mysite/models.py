@@ -7,6 +7,7 @@ class Post(models.Model):
     postname = models.CharField(max_length=50)
     contents = models.TextField()
     mainphoto = models.ImageField(blank=True, null=True)
+    
     def __str__(self):
         return self.postname
 
@@ -50,8 +51,8 @@ class MenuScoreAll(models.Model):
 
 
 class resultall(models.Model):
-    restaurant = models.CharField(max_length=300)
-    menu = models.CharField(max_length=300)
+    restaurant = models.CharField(max_length=300, null=True)
+    menu = models.CharField(max_length=300, null=True)
     emotion = models.CharField(max_length=300, null=True, default='')
     season = models.CharField(max_length=300, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True, null=True)

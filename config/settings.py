@@ -42,7 +42,7 @@ MIDDLEWARE = [
 ]
 
 #ngrok csrf 인증방법 장고가 버전업되면서 대응하는 방식이 생성됨 ([]안에 ngrok주소 입력하기! 주의 NGROK주소는 바뀐다!)
-CSRF_TRUSTED_ORIGINS = ['https://a67f-211-198-98-17.jp.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://766e-211-198-98-17.jp.ngrok.io']
 
 ROOT_URLCONF = 'config.urls'
 

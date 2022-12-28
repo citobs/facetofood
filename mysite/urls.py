@@ -13,6 +13,10 @@ urlpatterns = [
     path('recommend1/', views.food_list1, name="food_list1"),
     path('map/', views.map, name='map'),
     path('blank/', views.molar, name='molar'),
+    #전체음식추천기록
+    path('foodlist/',views.show_food,name="fv"),
+    #사진입력기록 보기
+    path('showall', views.show_post, name="showall"),
 
     #메뉴
     path('map/', views.map, name='map'),
